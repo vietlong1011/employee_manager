@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Welcome</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
 </head>
 <body>
 <h1>Welcome</h1>
@@ -14,14 +14,10 @@ Delete Person: <a href="/api/deletePerson">Delete Person</a><br>
 List Person: <a href="/api/list">List Person </a><br>
 Find Person: <a href="/api/findPerson">Find Person</a><br>
 
-<!--
+<div class="body-class">
+    <!-- content for body here -->
+</div>
+<iframe class="iframe-class" src="./bus.html" frameborder="0"></iframe>
 
-   In Thymeleaf the equivalent of
-   JSP's ${pageContext.request.contextPath}/edit.html
-   would be @{/edit.html}
-
-   -->
 
 </body>
-
-</html>
