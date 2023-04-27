@@ -1,6 +1,7 @@
 package com.o7planning.service;
 
 import com.o7planning.entity.Person;
+
 import com.o7planning.entity.PersonValidator;
 import com.o7planning.repository.PersonRepository;
 import jakarta.persistence.EntityManager;
@@ -80,12 +81,13 @@ public class PersonServiceImpl implements PersonService {
             if (person == null) {
                 return 0L;
             }
+            person = new Person();
             person.setNamePerson(newPerson.getNamePerson());
             person.setOld(newPerson.getOld());
             person.setGender(newPerson.isGender());
             person.setCountry(newPerson.getCountry());
             person.setDepartment(newPerson.getDepartment());
-            entityManager.merge(person);
+            //entityManager.merge(person);
             entityManager.flush();
             transaction.commit();
             return 1L;
