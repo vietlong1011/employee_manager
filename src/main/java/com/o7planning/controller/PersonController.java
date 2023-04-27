@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @RestController
@@ -21,13 +22,9 @@ public class PersonController {
 
 
     @PostMapping("/save")
-    public Person save(@RequestBody Person personRequest) {
-       // String uuid = UUID.randomUUID().toString();
-//        personRequest = new Person(personRequest.getId(), personRequest.getNamePerson(), personRequest.getOld(), personRequest.isGender(), personRequest.getCountry(),
-//                personRequest.getDepartment());
-
-        personService.save(personRequest);
-        return personRequest;
+    public Person save(@RequestBody Person person) {
+        personService.save(person);
+        return person;
     }
 
 //    @GetMapping("/findByName/{namePerson}")
@@ -42,8 +39,9 @@ public class PersonController {
 //    }
 
     @DeleteMapping("/delete/{id}")
-    public void deletePersonById(@PathVariable Long id) {
+    public String deletePersonById(@PathVariable Long id) {
         personService.deletePersonById(id);
+        return "OKE";
     }
 
     /** API: update/1?name=minh&department=KT **/

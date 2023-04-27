@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "person")
 public class Person {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
 
     @Column(name = "namePerson")
@@ -26,4 +26,15 @@ public class Person {
     @Column(name = "department")
     private String department;
 
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", namePerson='" + namePerson + '\'' +
+                ", old=" + old +
+                ", gender=" + gender +
+                ", country='" + country + '\'' +
+                ", department='" + department + '\'' +
+                '}';
+    }
 }

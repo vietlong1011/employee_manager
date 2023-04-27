@@ -60,7 +60,7 @@ public class PersonServiceImpl implements PersonService {
         CriteriaQuery<Person> query = builder.createQuery(Person.class);
         Root<Person> root = query.from(Person.class);
         query.select(root).where(builder.or(
-                builder.like(root.get("name"), "%" + keyword + "%"),
+                builder.like(root.get("namePerson"), "%" + keyword + "%"),
                 builder.like(root.get("department"), "%" + keyword + "%")
         ));
         TypedQuery<Person> typedQuery = entityManager.createQuery(query);
@@ -74,28 +74,41 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Long updatePersonById(Long id, Person newPerson) {
-        EntityTransaction transaction = entityManager.getTransaction();
-        try {
-            transaction.begin();
-            Person person = entityManager.find(Person.class, id);
-            if (person == null) {
-                return 0L;
-            }
-            person = new Person();
-            person.setNamePerson(newPerson.getNamePerson());
+       Person person = entityManager.find(Person.class, id);
+        if (person == null) {
+            return 0L;
+        }
+        person.setNamePerson(newPerson.getNamePerson());
             person.setOld(newPerson.getOld());
             person.setGender(newPerson.isGender());
             person.setCountry(newPerson.getCountry());
             person.setDepartment(newPerson.getDepartment());
-            //entityManager.merge(person);
-            entityManager.flush();
-            transaction.commit();
-            return 1L;
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
+        entityManager.flush();
+        return 1L;
     }
 
+//    @Override
+//    public Long updatePersonById(Long id, Person newPerson) {
+//        EntityTransaction transaction = entityManager.getTransaction();
+//        try {
+//            transaction.begin();
+//            Person person = entityManager.find(Person.class, id);
+//            if (person == null) {
+//                return 0L;
+//            }
+//            person = new Person();
+//            person.setNamePerson(newPerson.getNamePerson());
+//            person.setOld(newPerson.getOld());
+//            person.setGender(newPerson.isGender());
+//            person.setCountry(newPerson.getCountry());
+//            person.setDepartment(newPerson.getDepartment());
+//            //entityManager.merge(person);
+//            entityManager.flush();
+//            //transaction.commit();
+//            return 1L;
+//        } catch (Exception e) {
+//            transaction.rollback();
+//            throw e;
+//        }
+    }
 
-}
