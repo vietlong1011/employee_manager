@@ -73,19 +73,10 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Long updatePersonById(Long id, Person newPerson) {
-       Person person = entityManager.find(Person.class, id);
-        if (person == null) {
-            return 0L;
-        }
-        person.setNamePerson(newPerson.getNamePerson());
-            person.setOld(newPerson.getOld());
-            person.setGender(newPerson.isGender());
-            person.setCountry(newPerson.getCountry());
-            person.setDepartment(newPerson.getDepartment());
-        entityManager.flush();
-        return 1L;
+    public Person updatePersonById(Person person) {
+       return personRepository.updatePersonById(person);
     }
+
 
 //    @Override
 //    public Long updatePersonById(Long id, Person newPerson) {

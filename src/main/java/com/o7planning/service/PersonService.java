@@ -18,5 +18,5 @@ public interface PersonService {
      List<Person> searchPerson(String keyword);
      void deletePersonById(Long id);
      // sửa = tìm kiếm + sửa thuần +
-     Long updatePersonById(Long id ,Person person);
+     Person updatePersonById(Person person);
 }

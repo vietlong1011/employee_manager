@@ -47,7 +47,7 @@ public class PersonController {
     /** API: update/1?name=minh&department=KT **/
     @PutMapping("/update/{id}")
     public Long updatePersonById(@PathVariable("id") Long id, @RequestBody Person person) {
-       personService.updatePersonById(id, person );
+
        return person.getId();
     }
 
