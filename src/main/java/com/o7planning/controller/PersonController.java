@@ -1,6 +1,7 @@
 package com.o7planning.controller;
 
 import com.o7planning.entity.Person;
+import com.o7planning.repository.PersonRepository;
 import com.o7planning.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,15 +29,15 @@ public class PersonController {
     }
 
 //    @GetMapping("/findByName/{namePerson}")
-//    public Person findByNamePerson(@PathVariable String namePerson) {
-//        return personService.findByNamePerson(namePerson);
+//    public List<Person> findByNamePerson(@PathVariable String namePerson) {
+//        return ;
 //    }
 
 
-//    @GetMapping("/search/{keyword}")
-//    public List<Person> searchPerson(@PathVariable String keyword) {
-//        return personService.searchPerson(keyword);
-//    }
+    @GetMapping("/search/{keyword}")
+    public List<Person> searchPerson(@PathVariable String keyword) {
+        return personService.searchPerson(keyword);
+    }
 
     @DeleteMapping("/delete/{id}")
     public String deletePersonById(@PathVariable Long id) {
@@ -44,11 +45,12 @@ public class PersonController {
         return "OKE";
     }
 
-    /** API: update/1?name=minh&department=KT **/
+    /** API: update/1 **/
     @PutMapping("/update/{id}")
-    public Long updatePersonById(@PathVariable("id") Long id, @RequestBody Person person) {
-
-       return person.getId();
+    public Person updatePersonById(@PathVariable("id") Long id, @RequestBody Person person) {
+      person.setId(id);
+      personService.updatePersonById(person);
+       return person;
     }
 
 /**API xoa thanh cong

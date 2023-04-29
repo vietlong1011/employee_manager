@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -74,7 +75,12 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person updatePersonById(Person person) {
-       return personRepository.updatePersonById(person);
+        return personRepository.save(person);
+    }
+
+
+    public List<Person> findByNameContaining(String nameFind) {
+        return personRepository.findByNameContaining(nameFind);
     }
 
 
@@ -101,5 +107,5 @@ public class PersonServiceImpl implements PersonService {
 //            transaction.rollback();
 //            throw e;
 //        }
-    }
+}
 
