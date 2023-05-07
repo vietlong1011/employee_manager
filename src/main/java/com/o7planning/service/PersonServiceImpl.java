@@ -4,10 +4,7 @@ import com.o7planning.entity.Person;
 
 import com.o7planning.entity.PersonValidator;
 import com.o7planning.repository.PersonRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -16,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -78,9 +76,17 @@ public class PersonServiceImpl implements PersonService {
         return personRepository.save(person);
     }
 
-
-    public List<Person> findByNameContaining(String nameFind) {
-        return personRepository.findByNameContaining(nameFind);
+    @Override
+    public List<Person> findByNamePersonOrDepartment(String namePerson,String department) {
+        try {
+            String sql = "SELECT p FROM Person p WHERE p.namePerson LIKE ?1 OR p.department LIKE ?2";
+            TypedQuery<Person> query = entityManager.createQuery(sql, Person.class);
+            query.setParameter(1, namePerson);
+            query.setParameter(2, department);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return new ArrayList<>();
+        }
     }
 
 

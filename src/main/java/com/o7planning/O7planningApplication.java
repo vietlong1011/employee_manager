@@ -8,6 +8,7 @@ public class O7planningApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(O7planningApplication.class, args);
+		System.out.println("Hello SpringBoot");
 	}
 
 }

@@ -14,9 +14,6 @@ import java.util.List;
  **/
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
-      List<Person> findByNameContaining(String nameFind);
 
-//    @Query("SELECT e FROM person e WHERE e.namePerson LIKE %:keyword% OR e.department LIKE %:keyword%")
-//    List<Person> searchPerson(@Param("keyword") String keyword);
 
 }

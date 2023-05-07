@@ -15,7 +15,7 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
 
-    @Column(name = "namePerson")
+    @Column(name = "name_person")
     private String namePerson;
     @Column(name = "old")
     private int old;

@@ -1,6 +1,7 @@
 package com.o7planning.service;
 
 import com.o7planning.entity.Person;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -20,14 +21,16 @@ public interface PersonService {
 
     //     Person findByNamePerson(String namePerson);
     // tao ham tim kiem nhan vien theo key ,Criteria API
+   @Query("SELECT * FROM Person WHERE namePerson LIKE '%keyword%' OR department LIKE '%keyword%';")
     List<Person> searchPerson(String keyword);
 
     void deletePersonById(Long id);
 
     // sửa = tìm kiếm + sửa thuần +
     Person updatePersonById(Person person);
+    @Query("SELECT * FROM Person WHERE namePerson LIKE '%keyword%' OR department LIKE '%keyword%';")
+    List<Person> findByNamePersonOrDepartment(String namePerson,String department);
 
-    //     List<Person> findByFirstnameLike(String namePerson);
 
 
 }

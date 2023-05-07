@@ -28,10 +28,12 @@ public class PersonController {
         return person;
     }
 
-//    @GetMapping("/findByName/{namePerson}")
-//    public List<Person> findByNamePerson(@PathVariable String namePerson) {
-//        return ;
-//    }
+
+/** Ham nay va ham duoi no tuong tu nhau**/
+@GetMapping("findByNamePersonOrDepartment")
+public  List<Person> findByNamePersonOrDepartment(@RequestParam(name = "namePerson", required = false) String namePerson, @RequestParam(name = "department", required = false) String department){
+    return personService.findByNamePersonOrDepartment(namePerson,department);
+    }
 
 
     @GetMapping("/search/{keyword}")
@@ -53,6 +55,4 @@ public class PersonController {
        return person;
     }
 
-/**API xoa thanh cong
- * sua ham update , ham them**/
 }
