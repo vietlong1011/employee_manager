@@ -23,8 +23,10 @@ public class Person {
     private boolean gender;
     @Column(name = "country")
     private  String country;
-    @Column(name = "department")
-    private String department;
+//    @Column(name = "department")
+    @ManyToOne
+    @JoinColumn(name = "department")
+    private Department department;
 
     @Override
     public String toString() {

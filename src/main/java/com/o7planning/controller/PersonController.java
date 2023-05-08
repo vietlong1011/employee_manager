@@ -32,6 +32,7 @@ public class PersonController {
 /** Ham nay va ham duoi no tuong tu nhau**/
 @GetMapping("findByNamePersonOrDepartment")
 public  List<Person> findByNamePersonOrDepartment(@RequestParam(name = "namePerson", required = false) String namePerson, @RequestParam(name = "department", required = false) String department){
+
     return personService.findByNamePersonOrDepartment(namePerson,department);
     }
 

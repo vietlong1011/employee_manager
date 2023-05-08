@@ -79,7 +79,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public List<Person> findByNamePersonOrDepartment(String namePerson,String department) {
         try {
-            String sql = "SELECT p FROM Person p WHERE p.namePerson LIKE ?1 OR p.department LIKE ?2";
+            String sql = "SELECT p FROM Person p WHERE p.namePerson LIKE '?1' OR p.department LIKE '?2';";
             TypedQuery<Person> query = entityManager.createQuery(sql, Person.class);
             query.setParameter(1, namePerson);
             query.setParameter(2, department);

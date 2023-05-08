@@ -28,7 +28,7 @@ public interface PersonService {
 
     // sửa = tìm kiếm + sửa thuần +
     Person updatePersonById(Person person);
-    @Query("SELECT * FROM Person WHERE namePerson LIKE '%keyword%' OR department LIKE '%keyword%';")
+//    @Query("SELECT * FROM Person WHERE namePerson LIKE '%keyword%' OR department LIKE '%keyword%';")
     List<Person> findByNamePersonOrDepartment(String namePerson,String department);
 
 
