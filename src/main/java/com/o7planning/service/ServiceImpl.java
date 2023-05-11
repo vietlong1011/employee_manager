@@ -1,8 +1,13 @@
 package com.o7planning.service;
 
+import com.o7planning.converter.NewConvert;
+import com.o7planning.dto.DepartmentDtoIn;
+import com.o7planning.dto.PersonDtoIn;
+import com.o7planning.entity.Department;
 import com.o7planning.entity.Person;
 
 import com.o7planning.entity.PersonValidator;
+import com.o7planning.repository.DepartmentRepository;
 import com.o7planning.repository.PersonRepository;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -17,10 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PersonServiceImpl implements PersonService {
+public class ServiceImpl implements IService {
     @Autowired
     private PersonRepository personRepository;
-
+    @Autowired
+    private DepartmentRepository departmentRepository;
+    @Autowired
+    private NewConvert newConvert;
     @Autowired
     @Qualifier("validator")
     private PersonValidator validator;
@@ -40,18 +48,35 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person save(Person person) {
-        if (validator.isValid(person)) {
-            return personRepository.save(person);
-        }
-        return null;
+    public DepartmentDtoIn save(DepartmentDtoIn departmentDtoIn) {
+        Department department = new Department();
+        department = newConvert.toEntity(departmentDtoIn);
+        department = departmentRepository.save(department);
+        return newConvert.toDTO(department);
     }
 
-//    @Override
-//    public Person findByNamePerson(String namePerson) {
-//        return personRepository.findByNameLike(namePerson);
-//    }
+    /**
+     * Controller gọi đến dto ,
+     * dto được các Service chuyển đổi qua thành các Entity rồi dùng nó để
+     * truy xuất xuống Repository lấy data
+     **/
+    @Override
+    public PersonDtoIn save(PersonDtoIn personDtoIn) {
+        /**todo sau khi duoc khai sang */
+        Person person = new Person();
+        person = newConvert.toEntity(personDtoIn);
+        person = personRepository.save(person);
+        return newConvert.toDTO(person);
+    }
 
+    @Override
+    public List<Department> findAll() {
+        return departmentRepository.findAll();
+    }
+
+    /**
+     * todo
+     **/
     // Criteria API
     @Override
     public List<Person> searchPerson(String keyword) {
@@ -65,31 +90,36 @@ public class PersonServiceImpl implements PersonService {
         TypedQuery<Person> typedQuery = entityManager.createQuery(query);
         return typedQuery.getResultList();
     }
-
     @Override
     public void deletePersonById(Long id) {
         personRepository.deleteById(id);
     }
 
     @Override
-    public Person updatePersonById(Person person) {
-        return personRepository.save(person);
+    public PersonDtoIn updatePersonById(PersonDtoIn dto) {
+        Person person = new Person();
+        person.setId(dto.getId());
+        person = newConvert.toEntity(dto);
+        person = personRepository.save(person);
+        return newConvert.toDTO(person);
     }
 
+    /**todo**/
     @Override
-    public List<Person> findByNamePersonOrDepartment(String namePerson,String department) {
+    public List<PersonDtoIn> findByNamePersonOrDepartment(String namePerson,String department) {
         try {
-            String sql = "SELECT p FROM Person p WHERE p.namePerson LIKE '?1' OR p.department LIKE '?2';";
-            TypedQuery<Person> query = entityManager.createQuery(sql, Person.class);
-            query.setParameter(1, namePerson);
-            query.setParameter(2, department);
-            return query.getResultList();
+//            String sql = "SELECT p FROM Person p WHERE p.namePerson LIKE ?1 OR p.department LIKE ?2";
+//            TypedQuery<PersonDtoIn> query = entityManager.createQuery(sql, PersonDtoIn.class);
+//            query.setParameter(1, namePerson);
+//            query.setParameter(2, department);
+      //      return query.getResultList();
+            return   personRepository.findByNamePersonOrDepartment(namePerson,department);
         } catch (NoResultException e) {
             return new ArrayList<>();
         }
     }
 
-
+    /**todo**/
 //    @Override
 //    public Long updatePersonById(Long id, Person newPerson) {
 //        EntityTransaction transaction = entityManager.getTransaction();

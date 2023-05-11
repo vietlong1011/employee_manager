@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id ;
+    private Long id;
 
     @Column(name = "name_person")
     private String namePerson;
@@ -22,21 +22,9 @@ public class Person {
     @Column(name = "gender")
     private boolean gender;
     @Column(name = "country")
-    private  String country;
-//    @Column(name = "department")
-    @ManyToOne
-    @JoinColumn(name = "department")
-    private Department department;
+    private String country;
+    @Column(name = "department")
+    private String department;
 
-    @Override
-    public String toString() {
-        return "Person{" +
-                "id=" + id +
-                ", namePerson='" + namePerson + '\'' +
-                ", old=" + old +
-                ", gender=" + gender +
-                ", country='" + country + '\'' +
-                ", department='" + department + '\'' +
-                '}';
-    }
+
 }
