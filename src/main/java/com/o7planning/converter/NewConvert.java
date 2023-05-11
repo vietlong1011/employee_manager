@@ -6,6 +6,8 @@ import com.o7planning.entity.Department;
 import com.o7planning.entity.Person;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+
 @Component
 public class NewConvert {
 
@@ -48,4 +50,5 @@ public class NewConvert {
         }
         return departmentDtoIn;
     }
+
 }

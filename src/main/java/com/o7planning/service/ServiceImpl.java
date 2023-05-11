@@ -5,14 +5,11 @@ import com.o7planning.dto.DepartmentDtoIn;
 import com.o7planning.dto.PersonDtoIn;
 import com.o7planning.entity.Department;
 import com.o7planning.entity.Person;
-
 import com.o7planning.entity.PersonValidator;
 import com.o7planning.repository.DepartmentRepository;
 import com.o7planning.repository.PersonRepository;
-import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import com.o7planning.repository.PersonRepositoryCustom;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;
@@ -28,7 +25,10 @@ public class ServiceImpl implements IService {
     @Autowired
     private DepartmentRepository departmentRepository;
     @Autowired
+    private PersonRepositoryCustom personRepositoryCustom;
+    @Autowired
     private NewConvert newConvert;
+
     @Autowired
     @Qualifier("validator")
     private PersonValidator validator;
@@ -38,9 +38,6 @@ public class ServiceImpl implements IService {
      * Nó cho phép bạn sử dụng entityManager để thao tác với các đối tượng trong cơ sở dữ liệu
      * thông qua các phương thức của EntityManager.
      **/
-    @PersistenceContext
-    private EntityManager entityManager;
-
 
     @Override
     public List<Person> getPerson() {
@@ -62,7 +59,6 @@ public class ServiceImpl implements IService {
      **/
     @Override
     public PersonDtoIn save(PersonDtoIn personDtoIn) {
-        /**todo sau khi duoc khai sang */
         Person person = new Person();
         person = newConvert.toEntity(personDtoIn);
         person = personRepository.save(person);
@@ -74,26 +70,30 @@ public class ServiceImpl implements IService {
         return departmentRepository.findAll();
     }
 
-    /**
-     * todo
-     **/
     // Criteria API
     @Override
-    public List<Person> searchPerson(String keyword) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Person> query = builder.createQuery(Person.class);
-        Root<Person> root = query.from(Person.class);
-        query.select(root).where(builder.or(
-                builder.like(root.get("namePerson"), "%" + keyword + "%"),
-                builder.like(root.get("department"), "%" + keyword + "%")
-        ));
-        TypedQuery<Person> typedQuery = entityManager.createQuery(query);
-        return typedQuery.getResultList();
+    public List<PersonDtoIn> searchPerson(String keyword) {
+        List<Person> persons = personRepositoryCustom.searchPerson(keyword);
+        List<PersonDtoIn> dtos = new ArrayList<>();
+        for (Person person : persons) {
+            PersonDtoIn dto = new PersonDtoIn();
+            dto.setId(person.getId());
+            dto.setNamePerson(person.getNamePerson());
+            dto.setOld(person.getOld());
+            dto.setCountry(person.getCountry());
+            dto.setGender(person.isGender());
+            dto.setDepartment(person.getDepartment());
+            // set other fields as needed
+            dtos.add(dto);
+        }
+        return dtos;
     }
+
     @Override
     public void deletePersonById(Long id) {
         personRepository.deleteById(id);
     }
+
 
     @Override
     public PersonDtoIn updatePersonById(PersonDtoIn dto) {
@@ -104,22 +104,38 @@ public class ServiceImpl implements IService {
         return newConvert.toDTO(person);
     }
 
-    /**todo**/
+
     @Override
-    public List<PersonDtoIn> findByNamePersonOrDepartment(String namePerson,String department) {
-        try {
-//            String sql = "SELECT p FROM Person p WHERE p.namePerson LIKE ?1 OR p.department LIKE ?2";
-//            TypedQuery<PersonDtoIn> query = entityManager.createQuery(sql, PersonDtoIn.class);
-//            query.setParameter(1, namePerson);
-//            query.setParameter(2, department);
-      //      return query.getResultList();
-            return   personRepository.findByNamePersonOrDepartment(namePerson,department);
-        } catch (NoResultException e) {
-            return new ArrayList<>();
+    public List<PersonDtoIn> findByNamePersonOrDepartment(String namePerson, String department) {
+        List<Person> persons = personRepositoryCustom.findByNamePersonOrDepartment(namePerson, department);
+        List<PersonDtoIn> dtos = new ArrayList<>();
+        for (Person person : persons) {
+            PersonDtoIn dto = new PersonDtoIn();
+            dto.setId(person.getId());
+            dto.setNamePerson(person.getNamePerson());
+            dto.setOld(person.getOld());
+            dto.setCountry(person.getCountry());
+            dto.setGender(person.isGender());
+            dto.setDepartment(person.getDepartment());
+            // set other fields as needed
+            dtos.add(dto);
         }
+        return dtos;
     }
 
-    /**todo**/
+    @Override
+    public List<DepartmentDtoIn> findByDepartment(String department) {
+      List<Department> departments = departmentRepository.findAllByDepartment(department);
+      List<DepartmentDtoIn> dtoInList = new ArrayList<>();
+      for(Department d : departments){
+          DepartmentDtoIn dto = new DepartmentDtoIn();
+          dto = newConvert.toDTO(d);
+          dtoInList.add(dto);
+      }
+        return dtoInList;
+    }
+
+    /**ham nay y tuong thao tac voi JDBC voi cac lenh cua no**/
 //    @Override
 //    public Long updatePersonById(Long id, Person newPerson) {
 //        EntityTransaction transaction = entityManager.getTransaction();

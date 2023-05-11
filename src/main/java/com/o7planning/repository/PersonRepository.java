@@ -17,11 +17,4 @@ import java.util.Set;
  **/
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
-
-    @Query("SELECT * FROM Person WHERE namePerson LIKE '%keyword%' OR department LIKE '%keyword%';")
-    List<PersonDtoIn> findByNamePersonOrDepartment(String namePerson,String department);
-
-    // tao ham tim kiem nhan vien theo key ,Criteria API
-    @Query("SELECT * FROM Person WHERE namePerson LIKE '%keyword%' OR department LIKE '%keyword%';")
-    List<PersonDtoIn> searchPerson(String keyword);
 }

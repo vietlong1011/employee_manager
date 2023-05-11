@@ -39,24 +39,29 @@ public class ApiController {
 
     @PostMapping("/save")
     public PersonDtoIn save(@RequestBody PersonDtoIn person) {
-        return iService.save(person);
+         iService.save(person);
+        return person;
     }
 
 
     /**
      * Ham nay va ham duoi no tuong tu nhau
      **/
-@GetMapping("findByNamePersonOrDepartment")
-public  List<PersonDtoIn> findByNamePersonOrDepartment(@RequestParam(name = "namePerson", required = false) String namePerson, @RequestParam(name = "department", required = false) String department){
-
-        return iService.findByNamePersonOrDepartment(namePerson,department);
+    @GetMapping("findByNamePersonOrDepartment")
+    public List<PersonDtoIn> findByNamePersonOrDepartment(@RequestParam(name = "namePerson", required = false) String namePerson, @RequestParam(name = "department", required = false) String department) {
+        return iService.findByNamePersonOrDepartment(namePerson, department);
     }
 
+    @GetMapping("findDepartment/{department}")
+    public List<DepartmentDtoIn> findByDepartment(@PathVariable("department") String department){
+        return iService.findByDepartment(department);
+    }
 
     @GetMapping("/search/{keyword}")
-    public List<Person> searchPerson(@PathVariable String keyword) {
+    public List<PersonDtoIn> searchPerson(@PathVariable String keyword) {
         return iService.searchPerson(keyword);
     }
+
     @DeleteMapping("/delete/{id}")
     public String deletePersonById(@PathVariable Long id) {
         iService.deletePersonById(id);

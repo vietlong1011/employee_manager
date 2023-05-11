@@ -4,16 +4,19 @@ import com.o7planning.entity.Department;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.NonNull;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class PersonDtoIn {
+
     private Long id;
     private String namePerson;
     private int old;
     private boolean gender;
     private String country;
+    @NonNull
     private String department;
 }
 /**

@@ -28,8 +28,8 @@ public interface IService {
     void deletePersonById(Long id);
 
     // update = search + set + save
-
+    List<DepartmentDtoIn> findByDepartment(String department);
     PersonDtoIn updatePersonById(PersonDtoIn person);
     List<PersonDtoIn> findByNamePersonOrDepartment(String namePerson,String department);
-    List<Person> searchPerson(String keyword);
+    List<PersonDtoIn> searchPerson(String keyword);
 }
