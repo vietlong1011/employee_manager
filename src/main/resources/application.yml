@@ -10,5 +10,10 @@ spring:
     password: 10112002
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
+  security:
+    user:
+      name: long
+      password: quanlysinhvien.vn
+      roles: user

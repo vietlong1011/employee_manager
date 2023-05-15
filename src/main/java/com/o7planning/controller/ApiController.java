@@ -21,23 +21,23 @@ public class ApiController {
     private DepartmentRepository departmentRepository;
 
     // thao tac luu va hien thi obj department
-    @PostMapping("/saveDepartment")
+    @PostMapping("/department")
     public DepartmentDtoIn save(@RequestBody DepartmentDtoIn departmentDtoIn) {
         return iService.save(departmentDtoIn);
     }
 
-    @GetMapping("/findAll")
+    @GetMapping("/department")
     public List<Department> findAllDepartment() {
         return iService.findAll();
     }
 
     // thao tac voi obj person
-    @GetMapping("/list")
+    @GetMapping("/person")
     public List<Person> getPerson() {
         return iService.getPerson();
     }
 
-    @PostMapping("/save")
+    @PostMapping("/person")
     public PersonDtoIn save(@RequestBody PersonDtoIn person) {
          iService.save(person);
         return person;
@@ -47,7 +47,7 @@ public class ApiController {
     /**
      * Ham nay va ham duoi no tuong tu nhau
      **/
-    @GetMapping("findByNamePersonOrDepartment")
+    @GetMapping("findPerson")
     public List<PersonDtoIn> findByNamePersonOrDepartment(@RequestParam(name = "namePerson", required = false) String namePerson, @RequestParam(name = "department", required = false) String department) {
         return iService.findByNamePersonOrDepartment(namePerson, department);
     }
@@ -57,12 +57,12 @@ public class ApiController {
         return iService.findByDepartment(department);
     }
 
-    @GetMapping("/search/{keyword}")
+    @GetMapping("/findPerson/{keyword}")
     public List<PersonDtoIn> searchPerson(@PathVariable String keyword) {
         return iService.searchPerson(keyword);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/person/{id}")
     public String deletePersonById(@PathVariable Long id) {
         iService.deletePersonById(id);
         return "OKE";
@@ -71,7 +71,7 @@ public class ApiController {
     /**
      * API: update/1
      **/
-    @PutMapping("/update/{id}")
+    @PutMapping("/person/{id}")
     public PersonDtoIn updatePersonById(@PathVariable("id") Long id, @RequestBody PersonDtoIn dto) {
         dto.setId(id);
         iService.updatePersonById(dto);
