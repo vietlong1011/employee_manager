@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
 
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 @AllArgsConstructor
 public class PersonDtoIn {
 

@@ -17,4 +17,7 @@ import java.util.Set;
  **/
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
+    // Query bang JPQL
+    @Query("SELECT p FROM Person p WHERE p.namePerson LIKE :keyword1 OR p.department LIKE :keyword2")
+    List<Person> findByNamePersonOrDepartment(@Param("keyword1") String keyword1,@Param("keyword2") String keyword2);
 }

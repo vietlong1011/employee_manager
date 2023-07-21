@@ -4,12 +4,16 @@ import com.o7planning.dto.DepartmentDtoIn;
 import com.o7planning.dto.PersonDtoIn;
 import com.o7planning.entity.Department;
 import com.o7planning.entity.Person;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
 @Component
 public class NewConvert {
+    @Autowired
+    private ModelMapper modelMapper;
 
     // chuyen du lieu tu dto sang entity de dung trong noi bo ung dung
     public Person toEntity(PersonDtoIn personDtoIn) {
@@ -51,4 +55,10 @@ public class NewConvert {
         return departmentDtoIn;
     }
 
+    // test
+    public Department userToEntity(DepartmentDtoIn userDtoIn){
+        Department user = new Department();
+        user = modelMapper.map(userDtoIn, Department.class);
+        return user;
+    }
 }

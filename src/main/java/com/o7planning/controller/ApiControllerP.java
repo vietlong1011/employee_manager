@@ -1,35 +1,45 @@
 package com.o7planning.controller;
 
-import com.o7planning.dto.DepartmentDtoIn;
 import com.o7planning.dto.PersonDtoIn;
-import com.o7planning.entity.Department;
 import com.o7planning.entity.Person;
-import com.o7planning.repository.DepartmentRepository;
-import com.o7planning.service.IService;
+import com.o7planning.service.ISPerson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api")
-public class ApiController {
-    @Autowired
-    private IService iService;
+@RequestMapping("/api")
+public class ApiControllerP {
 
     @Autowired
-    private DepartmentRepository departmentRepository;
+    private ISPerson iService;
 
-    // thao tac luu va hien thi obj department
-    @PostMapping("/department")
-    public DepartmentDtoIn save(@RequestBody DepartmentDtoIn departmentDtoIn) {
-        return iService.save(departmentDtoIn);
+    @GetMapping("hello")
+    public String hello(){
+        return "index.html";
     }
 
-    @GetMapping("/department")
-    public List<Department> findAllDepartment() {
-        return iService.findAll();
-    }
+    /**
+     * {
+     *         "department": {
+     *             "idDepartment": 1,
+     *             "department": "KT",
+     *             "quantity_demanded": 50,
+     *             "teacher": "vuong",
+     *             "personList": [
+     *                 {
+     *                     "id": 1,
+     *                     "namePerson": null,
+     *                     "old": 0,
+     *                     "gender": false,
+     *                     "country": null,
+     *                     "department": "KT"
+     *                 }
+     *             ]
+     *         }
+     *  }**/
+
 
     // thao tac voi obj person
     @GetMapping("/person")
@@ -39,7 +49,7 @@ public class ApiController {
 
     @PostMapping("/person")
     public PersonDtoIn save(@RequestBody PersonDtoIn person) {
-         iService.save(person);
+        iService.save(person);
         return person;
     }
 
@@ -47,17 +57,14 @@ public class ApiController {
     /**
      * Ham nay va ham duoi no tuong tu nhau
      **/
-    @GetMapping("findPerson")
+    @GetMapping("/find-person")
     public List<PersonDtoIn> findByNamePersonOrDepartment(@RequestParam(name = "namePerson", required = false) String namePerson, @RequestParam(name = "department", required = false) String department) {
         return iService.findByNamePersonOrDepartment(namePerson, department);
     }
 
-    @GetMapping("findDepartment/{department}")
-    public List<DepartmentDtoIn> findByDepartment(@PathVariable("department") String department){
-        return iService.findByDepartment(department);
-    }
 
-    @GetMapping("/findPerson/{keyword}")
+
+    @GetMapping("/person/{keyword}")
     public List<PersonDtoIn> searchPerson(@PathVariable String keyword) {
         return iService.searchPerson(keyword);
     }

@@ -1,15 +1,11 @@
 package com.o7planning.service;
 
 import com.o7planning.converter.NewConvert;
-import com.o7planning.dto.DepartmentDtoIn;
 import com.o7planning.dto.PersonDtoIn;
-import com.o7planning.entity.Department;
 import com.o7planning.entity.Person;
 import com.o7planning.entity.PersonValidator;
-import com.o7planning.repository.DepartmentRepository;
 import com.o7planning.repository.PersonRepository;
 import com.o7planning.repository.PersonRepositoryCustom;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;
@@ -17,15 +13,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Controller gọi đến dto ,
+ * dto được các Service chuyển đổi qua thành các Entity rồi dùng nó để
+ * truy xuất xuống Repository lấy data
+ **/
 @Service
-public class ServiceImpl implements IService {
+public class ServiceImpl implements ISPerson {
     @Autowired
     private PersonRepository personRepository;
-    @Autowired
-    private DepartmentRepository departmentRepository;
+
     @Autowired
     private PersonRepositoryCustom personRepositoryCustom;
+
+
     @Autowired
     private NewConvert newConvert;
 
@@ -40,23 +41,10 @@ public class ServiceImpl implements IService {
      **/
 
     @Override
-    public List<Person> getPerson() {
-        return personRepository.findAll(Sort.by("namePerson").ascending());
+    public List<Person> getPerson(){
+    return personRepository.findAll(Sort.by("namePerson").ascending());
     }
 
-    @Override
-    public DepartmentDtoIn save(DepartmentDtoIn departmentDtoIn) {
-        Department department = new Department();
-        department = newConvert.toEntity(departmentDtoIn);
-        department = departmentRepository.save(department);
-        return newConvert.toDTO(department);
-    }
-
-    /**
-     * Controller gọi đến dto ,
-     * dto được các Service chuyển đổi qua thành các Entity rồi dùng nó để
-     * truy xuất xuống Repository lấy data
-     **/
     @Override
     public PersonDtoIn save(PersonDtoIn personDtoIn) {
         Person person = new Person();
@@ -65,10 +53,9 @@ public class ServiceImpl implements IService {
         return newConvert.toDTO(person);
     }
 
-    @Override
-    public List<Department> findAll() {
-        return departmentRepository.findAll();
-    }
+
+        //return departmentRepository.findAll();
+
 
     // Criteria API
     @Override
@@ -107,7 +94,7 @@ public class ServiceImpl implements IService {
 
     @Override
     public List<PersonDtoIn> findByNamePersonOrDepartment(String namePerson, String department) {
-        List<Person> persons = personRepositoryCustom.findByNamePersonOrDepartment(namePerson, department);
+        List<Person> persons = personRepository.findByNamePersonOrDepartment(namePerson, department);
         List<PersonDtoIn> dtos = new ArrayList<>();
         for (Person person : persons) {
             PersonDtoIn dto = new PersonDtoIn();
@@ -123,17 +110,6 @@ public class ServiceImpl implements IService {
         return dtos;
     }
 
-    @Override
-    public List<DepartmentDtoIn> findByDepartment(String department) {
-      List<Department> departments = departmentRepository.findAllByDepartment(department);
-      List<DepartmentDtoIn> dtoInList = new ArrayList<>();
-      for(Department d : departments){
-          DepartmentDtoIn dto = new DepartmentDtoIn();
-          dto = newConvert.toDTO(d);
-          dtoInList.add(dto);
-      }
-        return dtoInList;
-    }
 
     /**ham nay y tuong thao tac voi JDBC voi cac lenh cua no**/
 //    @Override

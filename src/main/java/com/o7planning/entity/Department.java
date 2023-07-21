@@ -24,8 +24,11 @@ public class Department {
 
     @Column(name = "department")
     private String department;
+
     private int quantity_demanded;
+
     private String teacher;
+
     @OneToMany(targetEntity = Person.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "department", referencedColumnName = "department")
     private List<Person> personList;

@@ -1,10 +1,7 @@
 package com.o7planning.service;
 
-import com.o7planning.dto.DepartmentDtoIn;
 import com.o7planning.dto.PersonDtoIn;
-import com.o7planning.entity.Department;
 import com.o7planning.entity.Person;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -16,19 +13,16 @@ import java.util.List;
  * Xóa nhân viên
  * Tìm kiếm nhân viên
  **/
-public interface IService {
+public interface ISPerson {
     PersonDtoIn save(PersonDtoIn person);
 
-    List<Department> findAll();
 
     List<Person> getPerson();
 
-    DepartmentDtoIn save(DepartmentDtoIn departmentDtoIn);
 
     void deletePersonById(Long id);
 
     // update = search + set + save
-    List<DepartmentDtoIn> findByDepartment(String department);
     PersonDtoIn updatePersonById(PersonDtoIn person);
     List<PersonDtoIn> findByNamePersonOrDepartment(String namePerson,String department);
     List<PersonDtoIn> searchPerson(String keyword);
