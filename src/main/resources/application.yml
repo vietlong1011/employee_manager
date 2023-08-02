@@ -5,22 +5,24 @@ server:
   port: 8887
 spring:
   app:
-    datasource:
-      jdbc.url: jdbc:mysql://localhost:3306/quanlynhanvien
+    datasource1:
+      url: jdbc:mysql://localhost:3306/quanlynhanvien
       username: root
       password: 10112002
       dataSourceClassName: com.mysql.cj.jdbc.Driver
+
+  security:
+    datasource2:
+      url: jdbc:mysql://localhost:3306/spring_security
+      username: root
+      password: 10112002
+      dataSourceClassName: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-#
-#  security:
-#    datasource:
-#      jdbc.url: jdbc:mysql://localhost:3306/spring_security
-#      username: root
-#      password: 10112002
-#      dataSourceClassName: com.mysql.cj.jdbc.Driver
+
 
 
 #    tao ra 1 DB chua pass rieng

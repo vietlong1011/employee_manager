@@ -1,4 +1,4 @@
-package com.o7planning.service;
+package com.o7planning.service.impl;
 
 import com.o7planning.converter.NewConvert;
 import com.o7planning.dto.PersonDtoIn;
@@ -6,6 +6,7 @@ import com.o7planning.entity.Person;
 import com.o7planning.entity.PersonValidator;
 import com.o7planning.repository.PersonRepository;
 import com.o7planning.repository.PersonRepositoryCustom;
+import com.o7planning.service.ISPerson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;

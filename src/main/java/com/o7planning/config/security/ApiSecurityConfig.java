@@ -1,4 +1,4 @@
-package com.o7planning.config;
+package com.o7planning.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,20 +8,18 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.security.web.server.SecurityWebFilterChain;
 
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@EnableWebFluxSecurity
 @RequiredArgsConstructor
 public class ApiSecurityConfig {
-
-
-
-//protected void config(AuthenticationManagerBuilder auth) throws Exception {
-//    auth.jdbcAuthentication().dataSource(dataSource);
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -47,5 +45,7 @@ public class ApiSecurityConfig {
                 //.formLogin().defaultSuccessUrl("/api/hello", true)
                 .and().build();
     }
+
+
 
 }
