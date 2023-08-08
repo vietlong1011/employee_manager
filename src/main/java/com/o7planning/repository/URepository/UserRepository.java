@@ -1,4 +1,4 @@
-package com.o7planning.repository;
+package com.o7planning.repository.URepository;
 
 import com.o7planning.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;

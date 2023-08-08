@@ -30,7 +30,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtServiceImpl implements JwtService {
 
-  private final JwtConfig jwtConfig;
+
+  private final JwtConfig jwtConfig; // loi do chua cau hinh bean o App config
 
   private final UserDetailsService userDetailsService;
 
@@ -88,7 +89,7 @@ public class JwtServiceImpl implements JwtService {
         return !ObjectUtils.isEmpty(userDetailsService.loadUserByUsername(username));
     }
 
-    /*3 method duoi ho tro cho viec check tinh hop le cua token trong viec giai ma***/
+    /**3 method duoi ho tro cho viec check tinh hop le cua token trong viec giai ma**/
 
     // trich xuat usernam tu token
     private String extractUsername(String token){

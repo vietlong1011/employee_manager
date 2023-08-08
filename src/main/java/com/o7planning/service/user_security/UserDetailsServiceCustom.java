@@ -2,7 +2,7 @@ package com.o7planning.service.user_security;
 
 import com.o7planning.entity.user.User;
 import com.o7planning.exception.BaseException;
-import com.o7planning.repository.UserRepository;
+import com.o7planning.repository.URepository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

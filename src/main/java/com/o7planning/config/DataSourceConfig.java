@@ -17,7 +17,7 @@ public class DataSourceConfig {
     private Environment env;
 
     @Primary
-    @Bean
+    @Bean(name = "DB1")
     @ConfigurationProperties(prefix = "spring.app.datasource1")
     public DataSource appDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -31,7 +31,7 @@ public class DataSourceConfig {
         return dataSource;
     }
 
-    @Bean
+    @Bean(name = "DB2")
     @ConfigurationProperties(prefix = "spring.security.datasource2")
     public DataSource dataSource() {
         return DataSourceBuilder
