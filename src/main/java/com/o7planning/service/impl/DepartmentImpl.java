@@ -2,8 +2,8 @@ package com.o7planning.service.impl;
 
 import com.o7planning.converter.NewConvert;
 import com.o7planning.dto.DepartmentDtoIn;
-import com.o7planning.entity.Department;
-import com.o7planning.repository.DepartmentRepository;
+import com.o7planning.entity.employee.Department;
+import com.o7planning.repository.ERepository.DepartmentRepository;
 import com.o7planning.service.ISDepartment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

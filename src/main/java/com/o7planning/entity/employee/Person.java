@@ -1,4 +1,4 @@
-package com.o7planning.entity;
+package com.o7planning.entity.employee;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

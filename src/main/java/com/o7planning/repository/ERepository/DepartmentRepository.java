@@ -1,7 +1,6 @@
-package com.o7planning.repository;
-import com.o7planning.entity.Department;
+package com.o7planning.repository.ERepository;
+import com.o7planning.entity.employee.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import org.springframework.stereotype.Repository;
 

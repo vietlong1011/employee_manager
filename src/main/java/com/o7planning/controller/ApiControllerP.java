@@ -1,7 +1,7 @@
 package com.o7planning.controller;
 
 import com.o7planning.dto.PersonDtoIn;
-import com.o7planning.entity.Person;
+import com.o7planning.entity.employee.Person;
 import com.o7planning.service.ISPerson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -61,7 +61,7 @@ public class ApiControllerP {
     /**
      * Ham nay va ham duoi no tuong tu nhau
      **/
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     @GetMapping("/find-person")
     public List<PersonDtoIn> findByNamePersonOrDepartment(@RequestParam(name = "namePerson", required = false) String namePerson, @RequestParam(name = "department", required = false) String department) {
         return iService.findByNamePersonOrDepartment(namePerson, department);

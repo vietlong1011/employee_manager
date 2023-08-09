@@ -1,15 +1,12 @@
-package com.o7planning.repository;
+package com.o7planning.repository.ERepository;
 
-import com.o7planning.dto.PersonDtoIn;
-import com.o7planning.entity.Department;
-import com.o7planning.entity.Person;
+import com.o7planning.entity.employee.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * class su dung cac phuong thuc duoc Spring Data JPA cung cap

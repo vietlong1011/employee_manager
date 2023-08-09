@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userDTO.getUsername());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         Set<Role> roleSet = new HashSet<>();
+        // tim kiem trong DB xem co role trung voi role duoc them vao k
         roleSet.add(roleRepository.findByName(userDTO.getUsername()));
         user.setRoles(roleSet);
         return user;

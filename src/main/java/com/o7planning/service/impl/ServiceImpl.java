@@ -2,10 +2,10 @@ package com.o7planning.service.impl;
 
 import com.o7planning.converter.NewConvert;
 import com.o7planning.dto.PersonDtoIn;
-import com.o7planning.entity.Person;
-import com.o7planning.entity.PersonValidator;
-import com.o7planning.repository.PersonRepository;
-import com.o7planning.repository.PersonRepositoryCustom;
+import com.o7planning.entity.employee.Person;
+import com.o7planning.entity.employee.PersonValidator;
+import com.o7planning.repository.ERepository.PersonRepository;
+import com.o7planning.repository.ERepository.PersonRepositoryCustom;
 import com.o7planning.service.ISPerson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

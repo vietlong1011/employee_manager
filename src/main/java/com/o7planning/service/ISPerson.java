@@ -1,7 +1,7 @@
 package com.o7planning.service;
 
 import com.o7planning.dto.PersonDtoIn;
-import com.o7planning.entity.Person;
+import com.o7planning.entity.employee.Person;
 
 import java.util.List;
 

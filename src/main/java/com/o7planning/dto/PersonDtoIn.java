@@ -1,6 +1,5 @@
 package com.o7planning.dto;
 
-import com.o7planning.entity.Department;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,20 +1,15 @@
-package com.o7planning.repository.impl;
+package com.o7planning.repository.ERepository.impl;
 
-import com.o7planning.dto.PersonDtoIn;
-import com.o7planning.entity.Person;
-import com.o7planning.repository.PersonRepositoryCustom;
+import com.o7planning.entity.employee.Person;
+import com.o7planning.repository.ERepository.PersonRepositoryCustom;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository

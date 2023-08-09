@@ -1,4 +1,4 @@
-package com.o7planning.entity;
+package com.o7planning.entity.employee;
 
 import com.o7planning.dto.PersonDtoIn;
 import org.thymeleaf.util.StringUtils;
