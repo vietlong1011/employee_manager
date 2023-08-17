@@ -1,9 +1,9 @@
 package com.o7planning.service.impl;
 
-import com.o7planning.dto.UserDTO;
+import com.o7planning.dto.request.UserDTO;
+import com.o7planning.entity.Provider;
 import com.o7planning.entity.user.Role;
 import com.o7planning.entity.user.User;
-import com.o7planning.exception.BaseException;
 import com.o7planning.repository.URepository.RoleRepository;
 import com.o7planning.repository.URepository.UserRepository;
 import com.o7planning.service.UserService;
@@ -12,10 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -33,8 +31,6 @@ public class UserServiceImpl implements UserService {
     public BaseResponseDTO registerAccount(UserDTO userDTO) {
 
         BaseResponseDTO response = new BaseResponseDTO();
-
-        validateAccount(userDTO);
 
         User user = insertUser(userDTO);
 
@@ -56,28 +52,16 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         Set<Role> roleSet = new HashSet<>();
         // tim kiem trong DB xem co role trung voi role duoc them vao k
-        roleSet.add(roleRepository.findByName(userDTO.getUsername()));
+        roleSet.add(roleRepository.findByName(userDTO.getRole()));
         user.setRoles(roleSet);
+        user.setEnabled(true);
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+
+        user.setProviderID(Provider.local.name());
         return user;
     }
 
-    private void validateAccount(UserDTO userDTO) {
-        // validate null data
-        if (ObjectUtils.isEmpty(userDTO)) {
-            throw new BaseException(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Data user not null");
-        }
 
-        //validate username exist
-        User user = userRepository.findByUsername(userDTO.getUsername());
-        if (!ObjectUtils.isEmpty(user)) {
-            throw new BaseException(String.valueOf(HttpStatus.BAD_REQUEST), "username has existed");
-        }
-
-        //validate role (check xem role co ton tai trong bang role cho phep k)
-        List<String> roles = roleRepository.findAll().stream().map(Role::getName).toList();
-        if (!roles.contains(userDTO.getRole())) {
-            throw new BaseException(String.valueOf(HttpStatus.BAD_REQUEST), "Invalid role");
-        }
-
-    }
 }

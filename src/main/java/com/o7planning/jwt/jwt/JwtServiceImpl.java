@@ -25,13 +25,16 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * class nay de ma hoa JWT
+ * **/
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class JwtServiceImpl implements JwtService {
 
 
-  private final JwtConfig jwtConfig; // loi do chua cau hinh bean o App config
+  private final JwtConfig jwtConfig;
 
   private final UserDetailsService userDetailsService;
 

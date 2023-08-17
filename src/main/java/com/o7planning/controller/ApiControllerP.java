@@ -5,6 +5,7 @@ import com.o7planning.entity.employee.Person;
 import com.o7planning.service.ISPerson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,31 +17,18 @@ public class ApiControllerP {
     @Autowired
     private ISPerson iService;
 
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+
     @GetMapping("hello")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public String hello(){
         return "index.html";
     }
 
-    /**
-     * {
-     *         "department": {
-     *             "idDepartment": 1,
-     *             "department": "KT",
-     *             "quantity_demanded": 50,
-     *             "teacher": "vuong",
-     *             "personList": [
-     *                 {
-     *                     "id": 1,
-     *                     "namePerson": null,
-     *                     "old": 0,
-     *                     "gender": false,
-     *                     "country": null,
-     *                     "department": "KT"
-     *                 }
-     *             ]
-     *         }
-     *  }**/
+    @GetMapping("hello2")
+    @PreAuthorize("hasRole('USER')")
+    public String hello2(){
+        return "index2.html";
+    }
 
 
     // thao tac voi obj person
@@ -58,9 +46,8 @@ public class ApiControllerP {
     }
 
 
-    /**
-     * Ham nay va ham duoi no tuong tu nhau
-     **/
+
+     // Ham nay va ham duoi no tuong tu nhau
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     @GetMapping("/find-person")
     public List<PersonDtoIn> findByNamePersonOrDepartment(@RequestParam(name = "namePerson", required = false) String namePerson, @RequestParam(name = "department", required = false) String department) {

@@ -1,27 +1,39 @@
-#hibernate:
-#  dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-#
-#server:
-#  port: 8887
-#spring:
-#  app:
-#    datasource1:
-#      url: jdbc:mysql://localhost:3306/quanlynhanvien
-#      username: root
-#      password: 10112002
-#      dataSourceClassName: com.mysql.cj.jdbc.Driver
-#
-#  security:
-#    datasource2:
-#      url: jdbc:mysql://localhost:3306/jwt_spring_security
-#      username: root
-#      password: 10112002
-#      dataSourceClassName: com.mysql.cj.jdbc.Driver
-#
-#  jpa:
-#    hibernate:
-#      ddl-auto: none
-#    show-sql: true
+
+spring:
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 748992109544-se0592m7sqvp8d29tot8hbsl57d03kuv.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+          facebook:
+            client-id: 820117936426545
+            client-secret: f4dad90b05b9d2bc9c69428c3f507000
+            scope:
+              - email
+              - public.profile
+          github:
+            client-id: 205d2cdf7db3ab26e48b
+            client-secret: e9e09d125ece49c9b04847db49a73066662ef81b
+            scope:
+              - user:email
+              - read:user
+
+
+
 #  main:
 #    allow-circular-references: true
 #

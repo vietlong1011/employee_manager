@@ -6,6 +6,9 @@ import com.o7planning.config.filter.JwtUsernamePasswordAuthenticationFilter;
 import com.o7planning.exception.CustomAccessDeniedHandler;
 import com.o7planning.jwt.JwtConfig;
 import com.o7planning.jwt.JwtService;
+import com.o7planning.service.oauth2.CustomOAuth2UserDetailService;
+import com.o7planning.service.oauth2.hander.CustomOAuth2FailureHandler;
+import com.o7planning.service.oauth2.hander.CustomOAuth2SuccessHandler;
 import com.o7planning.service.user_security.UserDetailsServiceCustom;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +16,30 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class ApiSecurityConfig {
+@EnableMethodSecurity// annotation bao ve cho phep su dung phan quyen truoc va sau
+public class ApiConfig {
+
+    @Autowired
+    private CustomOAuth2UserDetailService customOAuth2UserDetailService;
+
+    @Autowired
+    private CustomOAuth2FailureHandler customOAuth2FailureHandler;
+
+    @Autowired
+    private CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
 
     @Autowired
     private JwtConfig jwtConfig;
@@ -55,10 +70,8 @@ public class ApiSecurityConfig {
         auth.authenticationProvider(customAuthenticationProvider);
     }
 
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
 
         builder.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
@@ -66,19 +79,39 @@ public class ApiSecurityConfig {
         AuthenticationManager manager = builder.build();
 
         http
-                .csrf().disable()
                 .cors().disable()
-                .formLogin().disable()
-                // cau hinh cac api co the truy cap
+                // xu ly xac thuc co ban
                 .authorizeHttpRequests()
                 .requestMatchers("/account/**").permitAll()
-                .requestMatchers("/guest/**").permitAll()
-//                .requestMatchers("api/person/**").hasAuthority("USER")
-//                .requestMatchers("/api/department/**").hasAuthority("ADMIN")
-                .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                .requestMatchers("/user").hasAuthority("User")
+                .requestMatchers("/guest/**").authenticated()
+//                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+//                .requestMatchers("/user").hasAuthority("ROLE_USER")
                 .anyRequest().authenticated() // moi request phai login
                 .and()
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/sign-in")// duong dan den trang login
+                .defaultSuccessUrl("/home/index", true) //mac dinh , neu login thanh cong
+                .permitAll()
+                .and()
+                // xu ly khi thuc hien logout
+                .logout()
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID") // xoa cookies hien tai
+                .clearAuthentication(true) // loai bo quyen
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login?logout")
+                .and()
+                // thiet lap khi gap cac trang k cho phep
+                .exceptionHandling()
+                .accessDeniedPage("/403")
+                .and()
+                .csrf().disable()
+                .authenticationManager(manager)
+                .httpBasic()
+                .and()
+
+                // cau hinh JWT
                 //cấu hình quản lý phiên, xác thực người dùng và xử lý ngoại lệ trong Spring Security
                 .authenticationManager(manager)
                 .sessionManagement()
@@ -92,11 +125,34 @@ public class ApiSecurityConfig {
                 .accessDeniedHandler(new CustomAccessDeniedHandler())
                 .and()
                 .addFilterBefore(new JwtUsernamePasswordAuthenticationFilter(manager, jwtConfig, jwtService), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(new JwtTokenAuthenticationFilter(jwtConfig, jwtService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAfter(new JwtTokenAuthenticationFilter(jwtConfig, jwtService), UsernamePasswordAuthenticationFilter.class)
+
+                // cai dat oauth2
+                .oauth2Login() // kich hoat oauth2
+                .loginPage("/login") // return page login
+                .defaultSuccessUrl("/home/index", true) // login success return page home
+                .userInfoEndpoint()
+                .userService(customOAuth2UserDetailService) // lay thong tin tu ung dung cua nguoi dung uy quyen (username , email,role,..)
+                .and()
+                // dinh nghia cac thanh sau khi qua trinh xac thua OAuth2 thanh cong hoac that bai
+                .successHandler(customOAuth2SuccessHandler) // trong TH nay tra ve page home
+                .failureHandler(customOAuth2FailureHandler) // trong TH nay tra ve login
+                .and()// tao 1 session khi login success
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+
+        ;
 
         return http.build();
     }
 
+    // khong yeu cau xac thuc cac tep nay
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) ->
+                web.ignoring()
+                        .requestMatchers("/js/**", "/css/**");
+    }
 
 }
-// todo viet API
+// loi them tai khoan nhung khong them role user
