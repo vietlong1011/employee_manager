@@ -84,8 +84,8 @@ public class ApiConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/account/**").permitAll()
                 .requestMatchers("/guest/**").authenticated()
-//                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-//                .requestMatchers("/user").hasAuthority("ROLE_USER")
+                .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/user").hasAuthority("USER")
                 .anyRequest().authenticated() // moi request phai login
                 .and()
                 .formLogin()
@@ -100,7 +100,7 @@ public class ApiConfig {
                 .deleteCookies("JSESSIONID") // xoa cookies hien tai
                 .clearAuthentication(true) // loai bo quyen
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login?logout")
+                .logoutSuccessUrl("/login")
                 .and()
                 // thiet lap khi gap cac trang k cho phep
                 .exceptionHandling()
@@ -155,4 +155,5 @@ public class ApiConfig {
     }
 
 }
-// loi them tai khoan nhung khong them role user
+
+//cau hinh nhieu tk cua OAuth2

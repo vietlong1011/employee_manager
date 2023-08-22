@@ -55,7 +55,6 @@ public class ServiceImpl implements ISPerson {
     }
 
 
-        //return departmentRepository.findAll();
 
 
     // Criteria API
@@ -111,30 +110,5 @@ public class ServiceImpl implements ISPerson {
         return dtos;
     }
 
-
-    /**ham nay y tuong thao tac voi JDBC voi cac lenh cua no**/
-//    @Override
-//    public Long updatePersonById(Long id, Person newPerson) {
-//        EntityTransaction transaction = entityManager.getTransaction();
-//        try {
-//            transaction.begin();
-//            Person person = entityManager.find(Person.class, id);
-//            if (person == null) {
-//                return 0L;
-//            }
-//            person = new Person();
-//            person.setNamePerson(newPerson.getNamePerson());
-//            person.setOld(newPerson.getOld());
-//            person.setGender(newPerson.isGender());
-//            person.setCountry(newPerson.getCountry());
-//            person.setDepartment(newPerson.getDepartment());
-//            //entityManager.merge(person);
-//            entityManager.flush();
-//            //transaction.commit();
-//            return 1L;
-//        } catch (Exception e) {
-//            transaction.rollback();
-//            throw e;
-//        }
 }
 

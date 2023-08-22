@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * xác thực và tải thông tin người dùng từ OAuth2 Provider (ví dụ: Google, Facebook, GitHub, etc.).
  **/
 
-
+//  User login from OAuth2 -> authen , save username , role to DB
 @Service
 @RequiredArgsConstructor
 public class CustomOAuth2UserDetailService extends DefaultOAuth2UserService {
@@ -70,7 +70,7 @@ public class CustomOAuth2UserDetailService extends DefaultOAuth2UserService {
             if (!userDetail.getProviderID().equals((oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
                 throw new BaseException("400", "Invalid site login with " + userDetail.getProviderID());
             }
-            userDetail = updateOAuth2Detail(userDetail, oAuth2UserDetails);
+            userDetail = updateOAuth2Detail(userDetail, oAuth2UserDetails);// them tai khoan tu xac thuc tu OAuth2 xuong DB voi role User
             // cap nhap thong tin xac thuc moi nhat cho nguoi dung(thay doi username thanh email login)
         } else { // neu chua ton tai -> them dang nhap moi
             userDetail = registerNewOAuth2UserDetail(oAuth2UserRequest, oAuth2UserDetails);
@@ -96,7 +96,7 @@ public class CustomOAuth2UserDetailService extends DefaultOAuth2UserService {
         user.setAccountNonLocked(true);
         user.setAccountNonExpired(true);
         user.setRoles(new HashSet<>());
-        user.getRoles().add(roleRepository.findByName("USER"));
+        user.getRoles().add(roleRepository.findByName("ROLE_USER"));
 
         return userRepository.save(user);
     }

@@ -1,8 +1,8 @@
 package com.o7planning.jwt.jwt;
 
-import com.o7planning.exception.BaseException;
 import com.o7planning.jwt.JwtConfig;
 import com.o7planning.jwt.JwtService;
+import com.o7planning.exception.BaseException;
 import com.o7planning.service.user_security.UserDetailsCustom;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -26,7 +26,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * class nay de ma hoa JWT
+ * class nay de ma hoa JWT (tao JWT va trich xuat data Override)
  * **/
 @Service
 @RequiredArgsConstructor
@@ -37,6 +37,33 @@ public class JwtServiceImpl implements JwtService {
   private final JwtConfig jwtConfig;
 
   private final UserDetailsService userDetailsService;
+
+    //phương thức này tạo ra một JWT từ thông tin người dùng được cung cấp.
+    @Override
+    public String generateToken(UserDetailsCustom userDetailsCustom) {
+
+        Instant now = Instant.now();
+
+        List<String> roles = new ArrayList<>();
+
+        userDetailsCustom.getAuthorities().forEach( role -> {
+            roles.add(role.getAuthority());
+        });
+
+        log.info("Roles: {} ", roles);
+
+        return Jwts.builder()
+                .setSubject(userDetailsCustom.getUsername())
+                .claim("authorities", (userDetailsCustom.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList())))
+                .claim("roles", roles)
+                .claim("isEnable",userDetailsCustom.isEnabled())
+                .setIssuedAt(Date.from(now)) //Định nghĩa thời gian phát hành của JWT,
+                .setExpiration(Date.from(now.plusSeconds(jwtConfig.getExpiration())))//Định nghĩa thời gian hết hạn của JWT (3600 ke tu thoi diem bat dau)
+                .signWith(getKey(), SignatureAlgorithm.HS256) // tao chu ky so cho JWT dua theo ma key va thuat toan SHA256
+                .compact();
+    }
 
 // phương thức này trích xuất các thông tin từ JWT được mã hóa và trả về các biến Claims (các thuộc tính trong JWT).
     @Override
@@ -56,32 +83,7 @@ public class JwtServiceImpl implements JwtService {
         return Keys.hmacShaKeyFor(key);
     }
 
-    //phương thức này tạo ra một JWT từ thông tin người dùng được cung cấp.
-    @Override
-    public String generateToken(UserDetailsCustom userDetailsCustom) {
 
-        Instant now = Instant.now();
-
-        List<String> roles = new ArrayList<>();
-
-        userDetailsCustom.getAuthorities().forEach( role -> {
-                roles.add(role.getAuthority());
-        });
-
-        log.info("Roles: {} ", roles);
-
-        return Jwts.builder()
-                .setSubject(userDetailsCustom.getUsername())
-                .claim("authorities", (userDetailsCustom.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.toList())))
-                .claim("roles", roles)
-                .claim("isEnable",userDetailsCustom.isEnabled())
-                .setIssuedAt(Date.from(now)) //Định nghĩa thời gian phát hành của JWT,
-                .setExpiration(Date.from(now.plusSeconds(jwtConfig.getExpiration())))//Định nghĩa thời gian hết hạn của JWT (3600 ke tu thoi diem bat dau)
-                .signWith(getKey(), SignatureAlgorithm.HS256) // tao chu ky so cho JWT dua theo ma key va thuat toan SHA256
-                .compact();
-    }
 
     @Override
     public boolean isValidToken(String token) {

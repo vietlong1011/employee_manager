@@ -14,33 +14,21 @@ spring:
       client:
         registration:
           google:
-            client-id: 748992109544-se0592m7sqvp8d29tot8hbsl57d03kuv.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 748992109544-shs5jmolc2363m8ja4duhg099t9874lm.apps.googleusercontent.com
+            client-secret: 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
+
             scope:
               - email
               - profile
           facebook:
-            client-id: 820117936426545
-            client-secret: f4dad90b05b9d2bc9c69428c3f507000
+            client-id: 3579274418989160
+            client-secret: 70939eaad1dad6d8fa47e8a3532f4627
             scope:
               - email
-              - public.profile
+              - public_profile
           github:
             client-id: 205d2cdf7db3ab26e48b
             client-secret: e9e09d125ece49c9b04847db49a73066662ef81b
             scope:
               - user:email
-              - read:user
-
-
-
-#  main:
-#    allow-circular-references: true
-#
-#
-##    tao ra 1 DB chua pass rieng
-##    user:
-##      name: long
-##      password: quanlysinhvien.vn
-##      roles: user
-#
+              - read:use

@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+//@PreAuthorize("hasAuthority('USER')")
 public class ApiControllerP {
 
     @Autowired

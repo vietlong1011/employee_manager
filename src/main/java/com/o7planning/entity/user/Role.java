@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+//Authority khac Role o cho khi vao CSDL thi Role phai co tien to ROLE_User vai tro, con auth thi ten duoc mo ta nhu ten quyen han
 @Entity
 @Table(name = "roles")
 @AllArgsConstructor

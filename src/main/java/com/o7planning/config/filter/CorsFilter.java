@@ -9,7 +9,8 @@ import org.springframework.http.HttpMethod;
 
 import java.io.IOException;
 
-/** class cau hinh cho giao thuc xu ly CORS **/
+/** class cau hinh cho giao thuc xu ly CORS
+ * CORS cho phep cac web chia se tai nguyen thong qua HTTP -> gioi han yeu cau request**/
 @Configuration
 public class CorsFilter implements Filter {
     @Override

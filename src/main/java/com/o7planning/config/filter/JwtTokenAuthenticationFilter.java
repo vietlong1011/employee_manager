@@ -22,7 +22,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * class nay de xac thuc tinh hop le cua JWT va xu ly , so sanh data vs DB
+ * **/
 @Slf4j
 @RequiredArgsConstructor
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
