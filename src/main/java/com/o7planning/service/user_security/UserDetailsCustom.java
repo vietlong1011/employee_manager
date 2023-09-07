@@ -1,6 +1,8 @@
 package com.o7planning.service.user_security;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +12,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 // method UserDetail chua thong tin user duoc build san
 public class UserDetailsCustom implements UserDetails {
 

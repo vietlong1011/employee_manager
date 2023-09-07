@@ -18,4 +18,6 @@ public interface JwtService {
 
     // check tinh xac thuc
     boolean isValidToken(String token);
+
+    public String generateRefreshToken(UserDetailsCustom userDetailsCustom);
 }

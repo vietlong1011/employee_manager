@@ -2,9 +2,9 @@ package com.o7planning.entity.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.Set;
 
 
@@ -13,7 +13,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class User {
+@Builder
+public class User  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +27,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.DETACH)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(name = "user_role",joinColumns = @JoinColumn(name ="user_id",referencedColumnName = "user_id"),
     inverseJoinColumns = @JoinColumn(name ="role_id", referencedColumnName = "role_id"))
+    @Enumerated(EnumType.STRING) // luu tru duoi dang chuoi
     private Set<Role> roles;
 
     @Column(name = "account_non_expired")
@@ -45,4 +47,8 @@ public class User {
 
     @Column(name = "provider_ID")
     private String providerID;
+
+
+
+
 }

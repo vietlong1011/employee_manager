@@ -8,7 +8,9 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,9 +21,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.security.Key;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Data
 public class JwtServiceImpl implements JwtService {
 
 
@@ -38,11 +39,12 @@ public class JwtServiceImpl implements JwtService {
 
   private final UserDetailsService userDetailsService;
 
+
+
     //phương thức này tạo ra một JWT từ thông tin người dùng được cung cấp.
     @Override
     public String generateToken(UserDetailsCustom userDetailsCustom) {
 
-        Instant now = Instant.now();
 
         List<String> roles = new ArrayList<>();
 
@@ -59,8 +61,10 @@ public class JwtServiceImpl implements JwtService {
                         .collect(Collectors.toList())))
                 .claim("roles", roles)
                 .claim("isEnable",userDetailsCustom.isEnabled())
-                .setIssuedAt(Date.from(now)) //Định nghĩa thời gian phát hành của JWT,
-                .setExpiration(Date.from(now.plusSeconds(jwtConfig.getExpiration())))//Định nghĩa thời gian hết hạn của JWT (3600 ke tu thoi diem bat dau)
+//                .setIssuedAt(Date.from(now)) //Định nghĩa thời gian phát hành của JWT,
+//                .setExpiration(Date.from(now.plusSeconds(jwtConfig.getExpiration())))//Định nghĩa thời gian hết hạn của JWT (3600 ke tu thoi diem bat dau)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getExpiration()))
                 .signWith(getKey(), SignatureAlgorithm.HS256) // tao chu ky so cho JWT dua theo ma key va thuat toan SHA256
                 .compact();
     }
@@ -91,14 +95,15 @@ public class JwtServiceImpl implements JwtService {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-        return !ObjectUtils.isEmpty(userDetailsService.loadUserByUsername(username));
+        return !ObjectUtils.isEmpty(userDetails);
     }
+
 
     /**3 method duoi ho tro cho viec check tinh hop le cua token trong viec giai ma**/
 
     // trich xuat usernam tu token
-    private String extractUsername(String token){
-        return extractClaims(token, Claims::getSubject);
+    public String extractUsername(String token){
+        return extractClaims(token, Claims::getSubject); // method reference -> sub (id) xac dinh chu the cua id
     }
 
     //phương thức này trích xuất các thông tin từ JWT bằng cách sử dụng một hàm chức năng được cung cấp.
@@ -109,7 +114,7 @@ public class JwtServiceImpl implements JwtService {
 
     //phương thức này trích xuất tất cả các Claims từ JWT.
     private Claims extractAllClaims(String token){
-        Claims claims = null;
+        Claims claims; // Claims bao gom sub , iat , exp
 
         try {
             claims = Jwts.parserBuilder()
@@ -131,4 +136,27 @@ public class JwtServiceImpl implements JwtService {
 
         return claims;
     }
+
+    // refresh token
+    @Override
+    public String generateRefreshToken(UserDetailsCustom userDetailsCustom) {
+        return buildToken(new HashMap<>(),userDetailsCustom,jwtConfig.getRefreshExpiration());
+    }
+
+    private String buildToken(
+            Map<String, Object> extraClaims,
+            UserDetailsCustom userDetailsCustom ,
+            long expiration
+    ){
+
+        return Jwts
+                .builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetailsCustom.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getKey(),SignatureAlgorithm.HS256)
+                .compact();
+    }
+
 }
