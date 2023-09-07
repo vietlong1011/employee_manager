@@ -1,4 +1,4 @@
-package com.o7planning.controller;
+package com.o7planning.controller.UController;
 
 import com.o7planning.dto.DepartmentDtoIn;
 import com.o7planning.service.ISDepartment;

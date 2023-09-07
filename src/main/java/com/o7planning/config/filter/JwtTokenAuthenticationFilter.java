@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 /**
  * class nay de xac thuc tinh hop le cua JWT va xu ly , so sanh data vs DB
+ * // class nay run khi thuc hien khi nhan duoc request yeu cau sinh JWT
  * **/
 @Slf4j
 @RequiredArgsConstructor
@@ -37,6 +38,10 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        if (request.getServletPath().contains("/api/v1/auth")) { // kiem tra neu dung duong dan thi k can xac thuc
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // lay ten cua header de giai ma
         String accessToken = request.getHeader(jwtConfig.getHeader());

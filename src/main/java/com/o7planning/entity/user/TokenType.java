@@ -1,2 +1,5 @@
-package com.o7planning.entity.user;public enum TokenType {
+package com.o7planning.entity.user;
+
+public enum TokenType {
+    BEARER
 }

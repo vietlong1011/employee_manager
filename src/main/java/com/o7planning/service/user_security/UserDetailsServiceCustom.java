@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +37,7 @@ public class UserDetailsServiceCustom implements UserDetailsService {
 
     // method lay ra cac username , password , set role cua user theo username
     private UserDetailsCustom getUserDetails(String username) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findUserByUsername(username);
 
         if (ObjectUtils.isEmpty(user)) {
             throw new BaseException(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Invalid username or password!");

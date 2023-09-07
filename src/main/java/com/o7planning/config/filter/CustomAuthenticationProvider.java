@@ -16,10 +16,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 // quan trong trong xac thuc
@@ -45,7 +42,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         User user;
         try {
-            user = userRepository.findByUsername(username);
+            user = userRepository.findUserByUsername(username);
         } catch (Exception e) {
             throw new BaseException(String.valueOf(HttpStatus.UNAUTHORIZED.value()), "User's not found");
         }
