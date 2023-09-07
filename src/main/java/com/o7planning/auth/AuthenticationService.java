@@ -81,10 +81,9 @@ private final PasswordEncoder passwordEncoder;
         userDetailsCustom.setAuthorityList(convertRolesToAuthorities( request.getRole()));
 
         var jwtToken = jwtServiceImpl.generateToken(userDetailsCustom);
-        System.out.println("" +
-                "\nToken: "+ jwtToken);
-        var refreshToken = jwtServiceImpl.generateRefreshToken(userDetailsCustom);// todo error
-        saveUserToken(saveUser, jwtToken);
+        System.out.println( "\nToken: "+ jwtToken);
+        var refreshToken = jwtServiceImpl.generateRefreshToken(userDetailsCustom);
+        saveUserToken(saveUser, refreshToken);
 
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
@@ -105,8 +104,8 @@ private final PasswordEncoder passwordEncoder;
 
 
     private void revokeAllUserTokens(User user) {
-        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
-        if (validUserTokens.isEmpty()) return;
+        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId()); // check xem co ban gi cua revoked co gia tri tru k?
+        if (validUserTokens.isEmpty()) return; // neu k co -> ket thuc , nguoc lai revoke -> false
         ;
         validUserTokens.forEach(tokens -> {
             tokens.setExpired(false);
@@ -126,7 +125,7 @@ private final PasswordEncoder passwordEncoder;
             return;
         }
         refreshToken = authHeader.substring(7);
-        if (tokenRepository.findRevokedByToken(refreshToken)) {
+        if (Boolean.FALSE.equals(tokenRepository.findRevokedByToken(refreshToken))) { // check xem token con han su dung hay da bi thay the
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Token expired");
             System.err.println("Token expired\n");

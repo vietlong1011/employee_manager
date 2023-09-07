@@ -1,5 +1,6 @@
-package com.alibou.security.auth;
+package com.o7planning.auth;
 
+import com.o7planning.dto.LoginRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,23 +19,16 @@ public class AuthenticationController {
 
   private final AuthenticationService service;
 
-  // output access token and refresh token
+   //output access token and refresh token
   @PostMapping("/register")
   public ResponseEntity<AuthenticationResponse> register(
-      @RequestBody RegisterRequest request
+      @RequestBody LoginRequest request
   ) {
     return ResponseEntity.ok(service.register(request));
   }
 
 
-  @PostMapping("/authenticate")
-  public ResponseEntity<AuthenticationResponse> authenticate(
-      @RequestBody AuthenticationRequest request
-  ) {
-    return ResponseEntity.ok(service.authenticate(request));
-  }
-
-  // output access token and refresh token new
+ //  output access token and refresh token new
   @PostMapping("/refresh-token")
   public void refreshToken(
       HttpServletRequest request,

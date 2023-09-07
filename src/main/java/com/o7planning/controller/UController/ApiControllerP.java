@@ -1,4 +1,4 @@
-package com.o7planning.controller;
+package com.o7planning.controller.UController;
 
 import com.o7planning.dto.PersonDtoIn;
 import com.o7planning.entity.employee.Person;

@@ -1,6 +1,7 @@
 package com.o7planning.dto.request;
 
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,10 @@ public class UserDTO {
 
     @NotNull
     private String password;
+
+    @NotNull
+    @Email
+    private String email;
 
     @NotNull
     private String role;

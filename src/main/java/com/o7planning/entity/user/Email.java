@@ -2,33 +2,30 @@ package com.o7planning.entity.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Entity
-@Table(name = "tokens")
-public class Tokens {
+public class Email {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    public String token;
+    private String emailUser;
 
-    @Enumerated(EnumType.STRING) //gia tri cua tokenType duong luu bang String trong DB
-    public TokenType tokenType = TokenType.BEARER;
+    private String otp;
 
-    public boolean revoked;
+    private Boolean active;
 
-    public boolean expired;
+    private LocalDateTime otpGeneratedTime;
 
     @ManyToOne(fetch =  FetchType.LAZY)
     @JoinColumn(name ="user_id")
     public User user;
-
 }

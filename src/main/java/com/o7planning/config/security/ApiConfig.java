@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -83,9 +84,11 @@ public class ApiConfig {
                 // xu ly xac thuc co ban
                 .authorizeHttpRequests()
                 .requestMatchers("/account/**").permitAll()
+                .requestMatchers("/api/v1/auth/**").permitAll()
+                .requestMatchers("/otp/**").permitAll()
                 .requestMatchers("/guest/**").authenticated()
-                .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                .requestMatchers("/user").hasAuthority("USER")
+                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                .requestMatchers("/user/**").hasAuthority("ROLE_USER")
                 .anyRequest().authenticated() // moi request phai login
                 .and()
                 .formLogin()
